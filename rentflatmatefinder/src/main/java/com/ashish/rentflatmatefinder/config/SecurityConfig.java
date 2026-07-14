@@ -42,29 +42,34 @@ public class SecurityConfig {
                         .accessDeniedHandler(jwtAuthenticationEntryPoint)
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                "/api/v1/auth/**",
-                                "/api/v1/health",
-                                "/swagger-ui/**",
-                                "/v3/api-docs/**",
-                                "/ws/**",
-                                "/uploads/**"
-                        ).permitAll()
-                        .requestMatchers("/api/v1/listings/my", "/api/v1/listings/*/fill").hasAnyRole("OWNER", "ADMIN")
-                        .requestMatchers("/api/v1/listings/*/compatibility").hasAnyRole("TENANT", "ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/api/v1/listings", "/api/v1/listings/*")
-                        .permitAll()
-                        .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/api/v1/tenant-profile/**").hasAnyRole("TENANT", "ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/api/v1/listings").hasAnyRole("OWNER", "ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/api/v1/listings/**").hasAnyRole("OWNER", "ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/api/v1/listings/**").hasAnyRole("OWNER", "ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/api/v1/interests").hasAnyRole("TENANT", "ADMIN")
-                        .requestMatchers("/api/v1/interests/sent").hasAnyRole("TENANT", "ADMIN")
-                        .requestMatchers("/api/v1/interests/received", "/api/v1/interests/*/accept", "/api/v1/interests/*/decline")
-                        .hasAnyRole("OWNER", "ADMIN")
-                        .anyRequest().authenticated()
-                )
+
+        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+
+        .requestMatchers(
+                "/api/v1/auth/**",
+                "/api/v1/health",
+                "/swagger-ui/**",
+                "/v3/api-docs/**",
+                "/ws/**",
+                "/uploads/**"
+        ).permitAll()
+
+        .requestMatchers("/api/v1/listings/my", "/api/v1/listings/*/fill").hasAnyRole("OWNER", "ADMIN")
+        .requestMatchers("/api/v1/listings/*/compatibility").hasAnyRole("TENANT", "ADMIN")
+        .requestMatchers(HttpMethod.GET, "/api/v1/listings", "/api/v1/listings/*").permitAll()
+        .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
+        .requestMatchers("/api/v1/tenant-profile/**").hasAnyRole("TENANT", "ADMIN")
+        .requestMatchers(HttpMethod.POST, "/api/v1/listings").hasAnyRole("OWNER", "ADMIN")
+        .requestMatchers(HttpMethod.PUT, "/api/v1/listings/**").hasAnyRole("OWNER", "ADMIN")
+        .requestMatchers(HttpMethod.DELETE, "/api/v1/listings/**").hasAnyRole("OWNER", "ADMIN")
+        .requestMatchers(HttpMethod.POST, "/api/v1/interests").hasAnyRole("TENANT", "ADMIN")
+        .requestMatchers("/api/v1/interests/sent").hasAnyRole("TENANT", "ADMIN")
+        .requestMatchers("/api/v1/interests/received",
+                "/api/v1/interests/*/accept",
+                "/api/v1/interests/*/decline")
+        .hasAnyRole("OWNER", "ADMIN")
+        .anyRequest().authenticated()
+)
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
