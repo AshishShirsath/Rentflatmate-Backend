@@ -8,35 +8,39 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
-@Bean
-public CorsConfigurationSource corsConfigurationSource() {
+@Configuration
+public class CorsConfig {
 
-    CorsConfiguration configuration = new CorsConfiguration();
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
 
-    configuration.setAllowedOrigins(List.of(
-            "http://localhost:4200",
-            "https://rentflatmatefinder.onrender.com",
-            "https://rentflatmate-frontend.vercel.app"
-    ));
+        CorsConfiguration configuration = new CorsConfiguration();
 
-    configuration.setAllowedMethods(List.of(
-            "GET",
-            "POST",
-            "PUT",
-            "DELETE",
-            "PATCH",
-            "OPTIONS"
-    ));
+        configuration.setAllowedOrigins(List.of(
+                "http://localhost:4200",
+                "https://rentflatmatefinder.onrender.com",
+                "https://rentflatmate-frontend.vercel.app"
+        ));
 
-    configuration.setAllowedHeaders(List.of("*"));
-    configuration.setExposedHeaders(List.of("*"));
-    configuration.setAllowCredentials(true);
-    configuration.setMaxAge(3600L);
+        configuration.setAllowedMethods(List.of(
+                "GET",
+                "POST",
+                "PUT",
+                "DELETE",
+                "PATCH",
+                "OPTIONS"
+        ));
 
-    UrlBasedCorsConfigurationSource source =
-            new UrlBasedCorsConfigurationSource();
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setExposedHeaders(List.of("*"));
+        configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L);
 
-    source.registerCorsConfiguration("/**", configuration);
+        UrlBasedCorsConfigurationSource source =
+                new UrlBasedCorsConfigurationSource();
 
-    return source;
+        source.registerCorsConfiguration("/**", configuration);
+
+        return source;
+    }
 }
